@@ -1,0 +1,3 @@
+[submodule "node_modules/webxrscene"]
+	path = node_modules/webxrscene
+	url = https://invisibleSascha@github.com/InvisibleRoom/package_webxrscene.git
