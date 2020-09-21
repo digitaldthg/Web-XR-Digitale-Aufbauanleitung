@@ -23,19 +23,22 @@ module.exports = {
   optimization: {
     minimize: true,
     usedExports: true,
+    splitChunks : {
+      chunks: 'all',
+    }
   },
   resolve: {
     alias: {
       vue: 'vue/dist/vue.js'
     },
 		plugins: [
-			threeMinifier.resolver, // <=== (2) Add resolver on the FIRST line
+			//threeMinifier.resolver, // <=== (2) Add resolver on the FIRST line
 		]
 	},
   plugins:[
     //new BundleAnalyzerPlugin(),
-    threeMinifier,
-    new webpack.HotModuleReplacementPlugin(),
+    //threeMinifier,
+    new HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'client/template/index.html'),
       filename: 'index.html',
@@ -47,11 +50,6 @@ module.exports = {
     }),
     new VueLoaderPlugin()
   ],
-  optimization: {
-    splitChunks : {
-      chunks: 'all',
-    }
-  },
   
   devServer : {
     hot: true,
@@ -119,7 +117,14 @@ module.exports = {
         ]
       },
       {
-        test: /\.(gif|png|jpe?g|svg)$/i,
+        test: /\.svg$/,
+        use: [
+          'babel-loader',
+          'vue-svg-loader',
+        ],
+      },
+      {
+        test: /\.(gif|png|jpe?g)$/i,
         use: [
           'file-loader',
           {

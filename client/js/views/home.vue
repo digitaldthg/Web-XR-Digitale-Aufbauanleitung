@@ -1,8 +1,8 @@
 <template>
-  <div class="home"> 
-    <aside>
-        <LibraryItem :library="this.library" :mainScene="this.mainScene"/>
-    </aside>
+  <div class="home">
+    <Header />
+    
+    <Footer/>
   </div> 
 </template>
 
@@ -25,14 +25,23 @@
 </style>
 
 <script>
-import Vue from 'vue/dist/vue.js';
+import 'es6-promise/auto';
+
+import Vue from 'vue';
+
 import MainScene from '../ThreeD/mainScene';
-import LibraryItem from './LibraryItem.vue';
+//import LibraryItem from './LibraryItem.vue';
+import Header from './Components/Header.vue';
+import Footer from './Components/Footer.vue';
+import store from '../store';
 
 export default {
   name : "Home",
+  store : store,
   components:{
-    LibraryItem
+    Header,
+    //LibraryItem,
+    Footer
   },
   created(){
     this.Init();
@@ -47,24 +56,10 @@ export default {
   },
   methods: {
       Init:function(){
-      this.mainScene = new MainScene();
-
-      console.log("mainScene" , this.mainScene.webXRScene);
-
-      this.mainScene.webXRScene.Events.addEventListener("OnLoadStack",(arg)=>{
-        this.library = arg;
-      });
-      
+      store.state.mainScene.webXRScene.Events.addEventListener("OnLoadStack",(arg)=>{
+        store.commit("SetLibrary",arg);
+      }); 
     },
-    
-    enableAR:function (params) {
-      //this.mainScene.GetARButton();
-      console.log(this.mainScene);
-    },
-    enableVR:function (params) {
-      //this.mainScene.GetVRButton();
-      console.log(this.mainScene);
-    }
   }
 };
 </script>
