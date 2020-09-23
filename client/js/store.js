@@ -20,6 +20,8 @@ const store = new Vuex.Store({
       state.library = library;
     },
     PlayClip(state,clip){
+
+      console.log(state, clip);
       clip.play();
     }
 

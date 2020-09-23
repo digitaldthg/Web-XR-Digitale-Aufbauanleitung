@@ -7,6 +7,16 @@
       <div class="control-button vr-button" ref="VRcontrols"><VR /></div>
       <div class="control-button ar-button" ref="ARcontrols"><AR /></div>
     </div>
+
+    <div class="shaderControls">
+      <input type="range" value="0.001" step=".0001" v-on:input="ChangeDist"/>
+      <input type="range" min="0" max=".8" value="0.001" step=".0001" v-on:input="ChangeRadius"/>
+      <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'x')"/>
+      <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'y')"/>
+      <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'z')"/>
+
+
+    </div>
   </header>
 </template>
 <style lang="sass" scoped>
@@ -100,6 +110,23 @@ export default {
     this.$refs.VRcontrols.appendChild(VRButton);
     console.log(this.$refs.controls);
     console.log("mounted Header" , store.state.mainScene.webXRScene.Renderer.GetARButton());
+  },
+  methods:{
+    ChangeDist(e){
+      console.log("dist",  e.target.value);
+
+      store.state.mainScene.customMaterial.userData.shader.uniforms.dist.value = parseFloat(e.target.value);
+    },
+    ChangeRadius(e){
+      console.log("radius", e.target.value);
+      //window.radius  = e.target.value;
+    store.state.mainScene.customMaterial.userData.shader.uniforms.radius.value = parseFloat(e.target.value);
+      
+    },
+    ChangePos(e, axis){
+      store.state.mainScene.customMaterial.userData.shader.uniforms.customPositionVector.value[axis] = parseFloat(e.target.value);
+      console.log(store.state.mainScene.customMaterial.userData.shader.uniforms.customPositionVector.value);
+    }
   }
 }
 

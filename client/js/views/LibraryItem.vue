@@ -15,9 +15,6 @@
   padding:1rem;
 }
 
-.item{
-  
-}
 
 </style>
 <script>

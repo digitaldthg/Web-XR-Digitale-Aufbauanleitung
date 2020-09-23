@@ -63,7 +63,7 @@ footer{
 }
 .footer-content-nav {
   width: 100%;
-  height: 5px;
+  height: 15px;
   display: flex;
 }
 
@@ -123,7 +123,13 @@ export default {
   },
   methods:{
     playClip(clip){
-      store.commit('PlayClip', clip);
+
+      this.$store.state.library.VorhangSchiene.mixer.stopAllAction();
+      this.$store.state.library.VorhangSchiene.actions[clip.name].reset();
+      this.$store.state.library.VorhangSchiene.actions[clip.name].play();
+      console.log(clip.name, clip.name,store,this.$store.state.library.VorhangSchiene.actions[clip.name]);
+      //this.$store.state.library.Vorhangschiene.actions[clip.name].play();
+      //store.commit('PlayClip', clip);
     },
     ChangeAnimationStep(){
 
