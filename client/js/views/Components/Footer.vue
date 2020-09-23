@@ -17,11 +17,10 @@
             <div class="icon">Icon</div>
             <div class="icon">Icon</div>
           </div>
-        
       </div>
       <div class="footer-content-nav" v-if="this.$store.state.library.VorhangSchiene" >
           <button class="footer-content-nav-items" v-on:click="playClip(value)" :key="value.name" v-for="value in this.$store.state.library.VorhangSchiene.actions">
-            <span class="hidden">{{value.name}}</span>
+            <span class="_hidden">{{value.name}}</span>
           </button>
         </div>
         

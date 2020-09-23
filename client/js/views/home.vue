@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <ProgressOverlay/>
     <Header />
     
     <Footer/>
@@ -32,6 +33,7 @@ import Vue from 'vue';
 import MainScene from '../ThreeD/mainScene';
 //import LibraryItem from './LibraryItem.vue';
 import Header from './Components/Header.vue';
+import ProgressOverlay from './Components/ProgressOverlay.vue';
 import Footer from './Components/Footer.vue';
 import store from '../store';
 
@@ -40,8 +42,8 @@ export default {
   store : store,
   components:{
     Header,
-    //LibraryItem,
-    Footer
+    Footer,
+    ProgressOverlay
   },
   created(){
     this.Init();
@@ -56,9 +58,9 @@ export default {
   },
   methods: {
       Init:function(){
-      store.state.mainScene.webXRScene.Events.addEventListener("OnLoadStack",(arg)=>{
-        store.commit("SetLibrary",arg);
-      }); 
+        store.state.mainScene.webXRScene.Events.addEventListener("OnLoadStack",(arg)=>{
+          store.commit("SetLibrary",arg);
+        }); 
     },
   }
 };

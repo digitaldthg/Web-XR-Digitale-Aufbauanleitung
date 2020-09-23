@@ -16,8 +16,6 @@ class CustomMaterial extends THREE.MeshStandardMaterial {
  	shader.uniforms.dist = { value: 1 };
  	shader.uniforms.radius = { value: .75 };
  	shader.uniforms.customPositionVector = { value: new THREE.Vector3(0,0,0) };
-  
-   console.log(shader.vertexShader);
 
   shader.vertexShader = 'uniform float time;uniform vec3 customPositionVector;\nvarying float distFromCenter;\n' + shader.vertexShader;
     shader.vertexShader = shader.vertexShader.replace(

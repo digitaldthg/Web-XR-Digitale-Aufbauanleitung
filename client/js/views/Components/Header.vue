@@ -108,12 +108,9 @@ export default {
     var VRButton = store.state.mainScene.webXRScene.Renderer.GetVRButton();
     this.$refs.ARcontrols.appendChild(ARButton);
     this.$refs.VRcontrols.appendChild(VRButton);
-    console.log(this.$refs.controls);
-    console.log("mounted Header" , store.state.mainScene.webXRScene.Renderer.GetARButton());
   },
   methods:{
     ChangeDist(e){
-      console.log("dist",  e.target.value);
 
       store.state.mainScene.customMaterial.userData.shader.uniforms.dist.value = parseFloat(e.target.value);
     },
