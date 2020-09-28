@@ -7,6 +7,7 @@ class CustomMaskMaterial extends THREE.MeshStandardMaterial {
     this.amount = .5;
     this.transparent = true;
     this.skinning = true;
+    this.side = THREE.DoubleSide
   }
   customProgramCacheKey = function () {
     return this.amount;
@@ -55,6 +56,15 @@ class CustomMaskMaterial extends THREE.MeshStandardMaterial {
     
     this.userData.shader = shader;
   };
+
+  SetRadius(rad){
+    this.userData.shader.uniforms.radius.value = rad;
+  }
+  SetPosition(pos){
+    this.userData.shader.uniforms.customPositionVector.value.x = pos.x;
+    this.userData.shader.uniforms.customPositionVector.value.y = pos.y;
+    this.userData.shader.uniforms.customPositionVector.value.z = pos.z;
+  }
 
   update(){
 

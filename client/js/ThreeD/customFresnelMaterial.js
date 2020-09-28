@@ -27,8 +27,6 @@ class CustomFresnelMaterial extends THREE.MeshBasicMaterial {
       ].join( '\n' )
     );
 
-  console.log(shader.fragmentShader);
-
     shader.fragmentShader = `
     varying vec3 vPositionW;
 		varying vec3 vNormalW;\n` + shader.fragmentShader;
@@ -49,8 +47,6 @@ class CustomFresnelMaterial extends THREE.MeshBasicMaterial {
   update(){
 
     if(typeof(this.userData.shader) == "undefined"){return;}
-
-   // this.userData.shader.uniforms.color.value = performance.now() / 1000;
   }
   
 }

@@ -12,12 +12,10 @@
     position: relative;
     width:100%;
     height:100%;
-    pointer-events:none;
   }
   aside{
     position:absolute;
     top:0;
-    pointer-events:all;
     left:0;
     height:100%;
     overflow:scroll;

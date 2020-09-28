@@ -145,41 +145,16 @@ export default {
     
     playClip(clipName){
 
-      this.$data.currentStep = this.$data.steps.indexOf(clipName);
+      var mainScene = this.$store.state.mainScene;
+      this.$data.currentStep = mainScene.PlayActionByName(clipName);
 
-      var clip = this.$store.state.library.VorhangSchiene.actions[clipName];
+      //update html text
       this.$data.headline = clipName;
       this.$data.text = this.$store.state.MaskPositions[clipName].message;
-      var maskPos = this.$store.state.MaskPositions[clipName].pos;
-      var rad = this.$store.state.MaskPositions[clipName].radius;
-
-      this.$store.state.mainScene.webXRScene.Controls.SetTarget(maskPos.x,maskPos.y,maskPos.z, 2);
-
-
-      this.$store.state.mainScene.sphere.position.set(maskPos.x,maskPos.y,maskPos.z);
-      this.$store.state.mainScene.sphere.scale.set(rad * 2,rad * 2,rad * 2);
-      
-      this.$store.state.mainScene.customMaskMaterial.userData.shader.uniforms.radius.value = rad;
-      this.$store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value.x =maskPos.x;
-      this.$store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value.y =maskPos.y;
-      this.$store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value.z =maskPos.z;
-      
-      this.$store.state.mainScene.textUI.SetHeadline(clipName+ " ");
-      this.$store.state.mainScene.textUI.SetPosition(maskPos.x,maskPos.y,maskPos.z);
-      
-      this.$store.state.library.VorhangSchiene.mixer.stopAllAction();
-      this.$store.state.library.VorhangSchiene.actions[clip.name].reset();
-      this.$store.state.library.VorhangSchiene.actions[clip.name].play();
      
     },
     ChangeAnimationStep(dir){
-      var nextStep = this.currentStep + dir;
-      nextStep = nextStep > (this.$data.steps.length - 1) ? 0 : nextStep;
-      nextStep = nextStep < 0 ? (this.$data.steps.length - 1) : nextStep;
-
-      this.playClip(this.$data.steps[nextStep]);
-
-      console.log(this.$data.steps[nextStep] , dir, nextStep);
+      this.$store.state.mainScene.ChangeAnimationStep(dir);
     }
   }
 }

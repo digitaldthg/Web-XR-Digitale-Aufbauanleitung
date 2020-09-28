@@ -8,20 +8,20 @@
       <div class="control-button ar-button" ref="ARcontrols"><AR /></div>
     </div>
 
-    <!-- <div class="shaderControls">
+    <div class="shaderControls">
       <input type="range" value="0.001" step=".0001" v-on:input="ChangeDist"/>
       <input type="range" min="0" max=".8" value="0.001" step=".0001" v-on:input="ChangeRadius"/>
       <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'x')"/>
       <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'y')"/>
       <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'z')"/>
+      <button v-on:click="e=>GetCameraPos()">Get Camera Position</button>
 
-
-    </div> -->
+    </div>
   </header>
 </template>
 <style lang="sass" scoped>
 header {
-  pointer-events:all;
+  
   position: absolute;
   top: 0;
   left: 0;
@@ -104,12 +104,16 @@ export default {
   },
   created(){},
   mounted(){
-    var ARButton = store.state.mainScene.webXRScene.Renderer.GetARButton();
-    var VRButton = store.state.mainScene.webXRScene.Renderer.GetVRButton();
+    var ARButton = store.state.mainScene.webXRScene.Controls.GetARButton();
+    var VRButton = store.state.mainScene.webXRScene.Controls.GetVRButton();
     this.$refs.ARcontrols.appendChild(ARButton);
     this.$refs.VRcontrols.appendChild(VRButton);
   },
   methods:{
+    GetCameraPos(){
+      var pos = store.state.mainScene.webXRScene.Camera.instance.position;
+      console.log({...pos});
+    },
     ChangeDist(e){
 
       store.state.mainScene.customMaskMaterial.userData.shader.uniforms.dist.value = parseFloat(e.target.value);
