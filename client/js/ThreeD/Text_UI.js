@@ -6,41 +6,73 @@ class TextUI{
   constructor(webXRscene){
     this.webXRscene = webXRscene;
 
+    this.Init = this.Init.bind(this);
+    this.SetText = this.SetText.bind(this);
+    this.SetHeadline = this.SetHeadline.bind(this);
+    this.SetPosition = this.SetPosition.bind(this);
+
     this.Init();
   }
   Init(){
 
     this.container = new ThreeMeshUI.Block({
-      height: 1,
-      width: 1
+      height: .4,
+      width: .4
     });
   
-    this.container.position.set( 0, 1, 0 );
-    this.webXRscene.Renderer.scene.add( this.container );
+    this.container.position.set( .5, 0, 0 );
+    this.webXRscene.Scene.add( this.container );
 
     this.container.set({
       fontFamily: RobotoMSDFJSON,
       fontTexture: RobotoMSDFPNG,
+       alignContent : "center",
+      justifyContent : "center"
     });
 
-    const text = new ThreeMeshUI.Text({
-      content: 'The spiny bush viper is known for its extremely keeled dorsal scales.',
-      fontColor: new THREE.Color( 0xd2ffbd ),
-      fontSize: 0.08
+    this.currentHeadline = new ThreeMeshUI.Text({
+      content: 'Vorhangschienen ',
+      fontColor: new THREE.Color( 0x8bc34a ),
+      fontSize: 0.03,
+      padding : 1,
+    });
+    
+    this.currentText = new ThreeMeshUI.Text({
+      content: 'VR Tutorial',
+      fontColor: new THREE.Color( 0xffffff ),
+      fontSize: 0.03,
+      alignContent : "center",
+      justifyContent : "center"
     });
     // text.set({
     // });
 
 
-    this.container.add( text );
+    this.container.add( this.currentHeadline );
+    this.container.add( this.currentText );
 
 
   }
 
+  SetPosition(x,y,z){
+    this.container.position.set(x,y + .4,z);
+  }
+  
+  SetText(text){
+    this.currentText.set({
+      content : text
+    });
+  }
+
+  SetHeadline(text){
+    this.currentHeadline.set({
+      content : text
+    });
+  }
 
   Update(){
 
-    this.container.lookAt(this.webXRscene.Renderer.camera.instance.position);
+    this.container.lookAt(this.webXRscene.Camera.instance.position);
 
   }
 

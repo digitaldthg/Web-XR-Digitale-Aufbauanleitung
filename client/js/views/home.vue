@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <ProgressOverlay/>
+    <!-- <ProgressOverlay/> -->
     <Header />
     
     <Footer/>

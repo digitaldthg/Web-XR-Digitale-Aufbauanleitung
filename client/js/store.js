@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 import Vuex from 'vuex';
 import MainScene from './ThreeD/mainScene';
+import MaskPositions from './ThreeD/MaskPositions';
 
 Vue.use(Vuex);
 
@@ -11,6 +12,7 @@ const store = new Vuex.Store({
     currentAnimationClip: 0,
     mainScene : new MainScene(),
     library : {},
+    MaskPositions : MaskPositions
   },
   mutations: {
     increment (state) {

@@ -8,7 +8,7 @@
       <div class="control-button ar-button" ref="ARcontrols"><AR /></div>
     </div>
 
-    <div class="shaderControls">
+    <!-- <div class="shaderControls">
       <input type="range" value="0.001" step=".0001" v-on:input="ChangeDist"/>
       <input type="range" min="0" max=".8" value="0.001" step=".0001" v-on:input="ChangeRadius"/>
       <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'x')"/>
@@ -16,7 +16,7 @@
       <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'z')"/>
 
 
-    </div>
+    </div> -->
   </header>
 </template>
 <style lang="sass" scoped>
@@ -112,17 +112,22 @@ export default {
   methods:{
     ChangeDist(e){
 
-      store.state.mainScene.customMaterial.userData.shader.uniforms.dist.value = parseFloat(e.target.value);
+      store.state.mainScene.customMaskMaterial.userData.shader.uniforms.dist.value = parseFloat(e.target.value);
     },
     ChangeRadius(e){
       console.log("radius", e.target.value);
       //window.radius  = e.target.value;
-    store.state.mainScene.customMaterial.userData.shader.uniforms.radius.value = parseFloat(e.target.value);
+      store.state.mainScene.customMaskMaterial.userData.shader.uniforms.radius.value = parseFloat(e.target.value);
+      store.state.mainScene.sphere.scale.x = parseFloat(e.target.value) * 2;
+      store.state.mainScene.sphere.scale.y = parseFloat(e.target.value) * 2;
+      store.state.mainScene.sphere.scale.z = parseFloat(e.target.value) * 2;
       
     },
     ChangePos(e, axis){
-      store.state.mainScene.customMaterial.userData.shader.uniforms.customPositionVector.value[axis] = parseFloat(e.target.value);
-      console.log(store.state.mainScene.customMaterial.userData.shader.uniforms.customPositionVector.value);
+      store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value[axis] = parseFloat(e.target.value);
+      store.state.mainScene.sphere.position[axis] = parseFloat(e.target.value);
+      
+      console.log(store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value);
     }
   }
 }

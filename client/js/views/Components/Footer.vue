@@ -2,14 +2,15 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-content">
-        <button class="nav-buttons" :click="ChangeAnimationStep(-1)"><Prev/></button>
+        <button class="nav-buttons" v-on:click="ChangeAnimationStep(-1)"><Prev/></button>
       </div>
 
       <div class="footer-content flex-height footer-main">
        
         <div class="footer-content-inner flex-width">
           <div class="footer-content-message">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <h3>{{headline}}</h3>
+            <p>{{text}}</p>
           </div>
           <div class="footer-content-icons">
 
@@ -19,15 +20,24 @@
           </div>
       </div>
       <div class="footer-content-nav" v-if="this.$store.state.library.VorhangSchiene" >
-          <button class="footer-content-nav-items" v-on:click="playClip(value)" :key="value.name" v-for="value in this.$store.state.library.VorhangSchiene.actions">
+      
+          <button class="footer-content-nav-items" v-on:click="playClip('Schienenteile')"><span class="_hidden">Schienenteile</span></button>
+          <button class="footer-content-nav-items" v-on:click="playClip('Zugwagen')"><span class="_hidden">Zugwagen</span></button>
+          <button class="footer-content-nav-items" v-on:click="playClip('Zweilaufradwagen')"><span class="_hidden">Zweilaufradwagen</span></button>
+          <button class="footer-content-nav-items" v-on:click="playClip('Umlenkrolle')"><span class="_hidden">Umlenkrolle</span></button>
+          <button class="footer-content-nav-items" v-on:click="playClip('Abstandshalter')"><span class="_hidden">Abstandshalter</span></button>
+          <button class="footer-content-nav-items" v-on:click="playClip('Feststeller')"><span class="_hidden">Feststeller</span></button>
+          <button class="footer-content-nav-items" v-on:click="playClip('Rohrhaken')"><span class="_hidden">Rohrhaken</span></button>
+          
+          <!-- <button class="footer-content-nav-items" v-on:click="playClip(value)" :key="value.name" v-for="value in this.$store.state.library.VorhangSchiene.actions">
             <span class="_hidden">{{value.name}}</span>
-          </button>
+          </button> -->
         </div>
         
       </div>
      
       <div class="footer-content">
-        <button class="nav-buttons" :click="ChangeAnimationStep(1)"><Next/></button>
+        <button class="nav-buttons" v-on:click="ChangeAnimationStep(1)"><Next/></button>
       </div>
     </div>
   </footer>
@@ -117,21 +127,59 @@ export default {
   },
   data(){
     return {
-
+      headline: "",
+      text : "Hallo und willkommen im Vorhangschienen XR Tutorial",
+      currentStep : -1,
+      steps : [
+        "Schienenteile",
+        "Zugwagen",
+        "Zweilaufradwagen",
+        "Umlenkrolle",
+        "Abstandshalter",
+        "Feststeller",
+        "Rohrhaken"
+      ]
     }
   },
   methods:{
-    playClip(clip){
+    
+    playClip(clipName){
 
+      this.$data.currentStep = this.$data.steps.indexOf(clipName);
+
+      var clip = this.$store.state.library.VorhangSchiene.actions[clipName];
+      this.$data.headline = clipName;
+      this.$data.text = this.$store.state.MaskPositions[clipName].message;
+      var maskPos = this.$store.state.MaskPositions[clipName].pos;
+      var rad = this.$store.state.MaskPositions[clipName].radius;
+
+      this.$store.state.mainScene.webXRScene.Controls.SetTarget(maskPos.x,maskPos.y,maskPos.z, 2);
+
+
+      this.$store.state.mainScene.sphere.position.set(maskPos.x,maskPos.y,maskPos.z);
+      this.$store.state.mainScene.sphere.scale.set(rad * 2,rad * 2,rad * 2);
+      
+      this.$store.state.mainScene.customMaskMaterial.userData.shader.uniforms.radius.value = rad;
+      this.$store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value.x =maskPos.x;
+      this.$store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value.y =maskPos.y;
+      this.$store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value.z =maskPos.z;
+      
+      this.$store.state.mainScene.textUI.SetHeadline(clipName+ " ");
+      this.$store.state.mainScene.textUI.SetPosition(maskPos.x,maskPos.y,maskPos.z);
+      
       this.$store.state.library.VorhangSchiene.mixer.stopAllAction();
       this.$store.state.library.VorhangSchiene.actions[clip.name].reset();
       this.$store.state.library.VorhangSchiene.actions[clip.name].play();
-      console.log(clip.name, clip.name,store,this.$store.state.library.VorhangSchiene.actions[clip.name]);
-      //this.$store.state.library.Vorhangschiene.actions[clip.name].play();
-      //store.commit('PlayClip', clip);
+     
     },
-    ChangeAnimationStep(){
+    ChangeAnimationStep(dir){
+      var nextStep = this.currentStep + dir;
+      nextStep = nextStep > (this.$data.steps.length - 1) ? 0 : nextStep;
+      nextStep = nextStep < 0 ? (this.$data.steps.length - 1) : nextStep;
 
+      this.playClip(this.$data.steps[nextStep]);
+
+      console.log(this.$data.steps[nextStep] , dir, nextStep);
     }
   }
 }
