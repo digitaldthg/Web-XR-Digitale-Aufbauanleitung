@@ -20,6 +20,8 @@ class CustomMaskMaterial extends THREE.MeshStandardMaterial {
  	shader.uniforms.maskOpacity = { value: .05 };
  	shader.uniforms.customPositionVector = { value: new THREE.Vector3(0,0,0) };
 
+  //  console.log(shader.vertexShader);
+  //  console.log(shader.fragmentShader);
 
     shader.vertexShader = `varying vec4 vWorldPosition;
     varying vec4 vCustomPosition;

@@ -106,13 +106,16 @@ export default {
   mounted(){
     var ARButton = store.state.mainScene.webXRScene.Controls.GetARButton();
     var VRButton = store.state.mainScene.webXRScene.Controls.GetVRButton();
+
+    VRButton.addEventListener("click",()=>{console.log("VR enabled");});
     this.$refs.ARcontrols.appendChild(ARButton);
     this.$refs.VRcontrols.appendChild(VRButton);
   },
   methods:{
     GetCameraPos(){
-      var pos = store.state.mainScene.webXRScene.Camera.instance.position;
+      var pos = store.state.mainScene.webXRScene.Camera.GetPosition();
       console.log({...pos});
+      console.log(store.state.mainScene.webXRScene.Camera.instance);
     },
     ChangeDist(e){
 

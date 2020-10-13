@@ -42,3 +42,13 @@ button{
   top:0;  
   right: 0;
 }
+
+
+
+main,.home{
+  pointer-events: none;
+}
+
+header,footer{
+  pointer-events: all;
+}

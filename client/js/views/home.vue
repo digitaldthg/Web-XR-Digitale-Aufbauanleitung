@@ -13,6 +13,8 @@
     width:100%;
     height:100%;
   }
+
+  
   aside{
     position:absolute;
     top:0;

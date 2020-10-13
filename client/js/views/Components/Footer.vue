@@ -55,7 +55,9 @@ footer{
   justify-content: center;
   align-items: center;
 }
-
+.footer-content-icons {
+  display: flex;
+}
 .footer-inner{
   padding:1rem;
   background: #fff;
@@ -154,7 +156,11 @@ export default {
      
     },
     ChangeAnimationStep(dir){
-      this.$store.state.mainScene.ChangeAnimationStep(dir);
+      
+      var message = this.$store.state.mainScene.ChangeAnimationStep(dir);
+      this.$data.headline = message.clipName;
+      this.$data.text = message.message;
+
     }
   }
 }

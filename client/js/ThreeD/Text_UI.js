@@ -22,7 +22,7 @@ class TextUI{
       backgroundOpacity :0
     });
   
-    this.container.position.set( .5, 0, 0 );
+    this.container.position.set( .5, 1, 0 );
 
     console.log(this.context.webXRScene.Scene);
 
@@ -151,7 +151,8 @@ class TextUI{
   }
 
   SetPosition(x,y,z){
-    this.container.position.set(x,y + .4,z);
+    let offset = 1;//this.context.webXRScene.Controls.GetCurrentXRMode() != "Desktop" ? 1 : 1;
+    this.container.position.set(x,( y + .4 + offset),z);
   }
   
   SetText(text){
@@ -168,7 +169,7 @@ class TextUI{
 
   Update(){
 
-    this.container.lookAt(this.context.webXRScene.Camera.instance.position);
+    this.container.lookAt(this.context.webXRScene.Camera.GetPosition());
 
   }
 
