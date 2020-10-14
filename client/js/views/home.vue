@@ -2,7 +2,7 @@
   <div class="home">
     <!-- <ProgressOverlay/> -->
     <Header />
-    
+    <ShaderDev />
     <Footer/>
   </div> 
 </template>
@@ -36,6 +36,7 @@ import Header from './Components/Header.vue';
 import ProgressOverlay from './Components/ProgressOverlay.vue';
 import Footer from './Components/Footer.vue';
 import store from '../store';
+import ShaderDev from './Components/ShaderDev.vue';
 
 export default {
   name : "Home",
@@ -43,7 +44,8 @@ export default {
   components:{
     Header,
     Footer,
-    ProgressOverlay
+    ProgressOverlay,
+    ShaderDev
   },
   created(){
     this.Init();
@@ -60,6 +62,7 @@ export default {
       Init:function(){
         store.state.mainScene.webXRScene.Events.addEventListener("OnLoadStack",(arg)=>{
           store.commit("SetLibrary",arg);
+          
         }); 
     },
   }

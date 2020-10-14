@@ -12,6 +12,10 @@ class TextUI{
     this.SetHeadline = this.SetHeadline.bind(this);
     this.SetPosition = this.SetPosition.bind(this);
 
+    this.context.webXRScene.Events.addEventListener("OnChangeXRView",(mode)=>{
+      this.container.visible = mode.xrMode != "Desktop";
+    });
+
     this.Init();
   }
   Init(){
@@ -27,6 +31,9 @@ class TextUI{
     console.log(this.context.webXRScene.Scene);
 
     this.context.webXRScene.Scene.add( this.container );
+
+    console.log(this.container);
+    this.container.visible = false;
 
     /**Text Container */
     this.textContainer = new ThreeMeshUI.Block({

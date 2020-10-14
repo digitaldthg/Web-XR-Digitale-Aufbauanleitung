@@ -60,6 +60,8 @@ class CustomMaskMaterial extends THREE.MeshStandardMaterial {
   };
 
   SetRadius(rad){
+
+    console.log("radius -> " ,rad , this.userData);
     this.userData.shader.uniforms.radius.value = rad;
   }
   SetPosition(pos){

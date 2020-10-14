@@ -12,32 +12,25 @@
             <h3>{{headline}}</h3>
             <p>{{text}}</p>
           </div>
-          <div class="footer-content-icons">
-
-            <div class="icon">Icon</div>
-            <div class="icon">Icon</div>
-            <div class="icon">Icon</div>
+          <div class="footer-content-icons" v-if="toolsNeeded.length > 0">
+            <div class="icon" v-for="tool in toolsNeeded" v-bind:key="tool">
+              <Hammer v-if="tool == 'Hammer' " />
+              <Zange v-if="tool == 'Zange' " />
+              <Schraubenschluessel v-if="tool == 'Schraubenschlüssel/Ratsche SW 13 mm' " />
+              <Imbus v-if="tool == 'ISK 8 mm' " />
+              <span class="tool-name">{{tool}}</span>
+              
+            </div>            
           </div>
-      </div>
-      <div class="footer-content-nav" v-if="this.$store.state.library.VorhangSchiene" >
-      
-          <button class="footer-content-nav-items" v-on:click="playClip('Schienenteile')"><span class="_hidden">Schienenteile</span></button>
-          <button class="footer-content-nav-items" v-on:click="playClip('Zugwagen')"><span class="_hidden">Zugwagen</span></button>
-          <button class="footer-content-nav-items" v-on:click="playClip('Zweilaufradwagen')"><span class="_hidden">Zweilaufradwagen</span></button>
-          <button class="footer-content-nav-items" v-on:click="playClip('Umlenkrolle')"><span class="_hidden">Umlenkrolle</span></button>
-          <button class="footer-content-nav-items" v-on:click="playClip('Abstandshalter')"><span class="_hidden">Abstandshalter</span></button>
-          <button class="footer-content-nav-items" v-on:click="playClip('Feststeller')"><span class="_hidden">Feststeller</span></button>
-          <button class="footer-content-nav-items" v-on:click="playClip('Rohrhaken')"><span class="_hidden">Rohrhaken</span></button>
-          
-          <!-- <button class="footer-content-nav-items" v-on:click="playClip(value)" :key="value.name" v-for="value in this.$store.state.library.VorhangSchiene.actions">
-            <span class="_hidden">{{value.name}}</span>
-          </button> -->
+        </div>
+        <div class="footer-content-nav " v-if="this.$store.state.library.VorhangSchiene" >
+          <button :class="'footer-content-nav-items nav-item-'+index + ' active-'+ (index <= currentStep)" v-for="(step,index) in this.stepsInOrder()" v-bind:key="step.js_name" v-on:click="playClip(step.js_name)"><span class="_hidden">{{step.js_name}}</span></button>
         </div>
         
-      </div>
-     
+      </div> 
       <div class="footer-content">
         <button class="nav-buttons" v-on:click="ChangeAnimationStep(1)"><Next/></button>
+        {{currentStep}}
       </div>
     </div>
   </footer>
@@ -55,13 +48,47 @@ footer{
   justify-content: center;
   align-items: center;
 }
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-content-message{
+  margin-right: 1rem;
+  flex: 1;
+  
+  p,h3 {
+    font-size: 14px;
+    display: inline;
+  }
+}
+
+.footer-content-message,
+.footer-content-icons {
+  padding: 1rem;
+  box-shadow: 0 0 0.5rem 0 rgba(0,0,0,.2);
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tool-name {
+  font-size: 80%;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  color: #666;
+  max-width: 160px;
+}
+
 .footer-content-icons {
   display: flex;
 }
 .footer-inner{
   padding:1rem;
   background: #fff;
-  border-radius: 2rem;
+  border-radius: 100px;
   box-shadow:0 0 1rem 0 rgba(0,0,0,.2);
   justify-content: space-between;
   display: flex;
@@ -77,7 +104,11 @@ footer{
   height: 15px;
   display: flex;
 }
-
+.footer-content-nav {
+  padding: .2rem;
+  box-shadow: 0 0 0.5rem 0 rgba(0,0,0,.2);
+  border-radius: .5rem;
+}
 .footer-content-nav-items{
   height: 100%;
   flex:1;
@@ -87,7 +118,17 @@ footer{
   &:last-child{
     margin-right:0;
   }
+  &:hover {
+    background: #eee;
+  }
+
+  &.active-true{
+    border:1px solid #484848;
+    background: #484848;
+  }
 }
+
+
 
 .flex-height {
   display: flex;
@@ -96,6 +137,7 @@ footer{
 }
 .flex-width {
   display: flex;
+  width: 100%;
   justify-content: space-between;
 }
 .nav-buttons{
@@ -119,19 +161,37 @@ import store from '../../store';
 
 import Prev from '../../Icons/prev.svg';
 import Next from '../../Icons/next.svg';
+import { StencilOp } from 'three';
+import Hammer from '../../Icons/icon__Hammer.svg';
+import Zange from '../../Icons/icon__Zange.svg';
+import Schraubenschluessel from '../../Icons/icon__Schraubenschluessel.svg';
+import Imbus from '../../Icons/icon__Imbus.svg';
+import MaskPositions from '../../ThreeD/MaskPositions';
 
 export default {
   name :"Footer",
   store : store,
   components:{
     Prev,
-    Next
+    Next,
+    Hammer,
+    Zange,
+    Schraubenschluessel,
+    Imbus
   },
   data(){
     return {
       headline: "",
       text : "Hallo und willkommen im Vorhangschienen XR Tutorial",
+      toolsNeeded: [],
       currentStep : -1,
+      stepsInOrder: ()=>{
+        var steps = [];
+        Object.keys(MaskPositions).map((step ,index)=>{
+          steps[MaskPositions[step].Schritt - 1] = MaskPositions[step];
+        });
+        return steps;
+      },
       steps : [
         "Schienenteile",
         "Zugwagen",
@@ -147,20 +207,38 @@ export default {
     
     playClip(clipName){
 
-      var mainScene = this.$store.state.mainScene;
-      this.$data.currentStep = mainScene.PlayActionByName(clipName);
-
+      var mainScene = store.state.mainScene;
+      mainScene.PlayActionByName(clipName);
+      this.currentStep = mainScene.currentStep;
       //update html text
-      this.$data.headline = clipName;
-      this.$data.text = this.$store.state.MaskPositions[clipName].message;
+      this.headline = clipName;
+
+      this.text = store.state.MaskPositions[clipName].Description;
+
+      this.toolsNeeded = this.filterTools(store.state.MaskPositions[clipName]);
      
     },
     ChangeAnimationStep(dir){
       
-      var message = this.$store.state.mainScene.ChangeAnimationStep(dir);
-      this.$data.headline = message.clipName;
-      this.$data.text = message.message;
+      var message = store.state.mainScene.ChangeAnimationStep(dir);
+      console.log(message);
+      this.currentStep = store.state.mainScene.currentStep;
+      this.headline = message.clipName;
+      this.text = message.Description;
 
+      this.toolsNeeded = this.filterTools(message);
+    },
+    filterTools(stepInfo){
+      
+      var toolKeyName = ["Tool_1","Tool_2","Tool_3","Tool_4","Tool_5"];
+      var tools = [];
+      toolKeyName.forEach((key)=>{
+        if(stepInfo[key]){
+          tools.push(stepInfo[key]);
+        }
+      });
+      
+      return tools;
     }
   }
 }

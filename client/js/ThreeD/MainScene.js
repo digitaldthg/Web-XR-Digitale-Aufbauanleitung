@@ -21,26 +21,22 @@ class MainScene{
     this.store = store;
     this.library = {};
     this.currentStep = -1;
-    this.steps = [
-      "Schienenteile",
-      "Zugwagen",
-      "Zweilaufradwagen",
-      "Umlenkrolle",
-      "Abstandshalter",
-      "Feststeller",
-      "Rohrhaken"
-    ];
 
+    var sortedSteps = Object.keys(MaskPositions).sort((a,b)=>{
+      return MaskPositions[a].Schritt - MaskPositions[b].Schritt;
+    }).map((keyName, index)=>{
+      return keyName;
+    });
+    
+    this.steps = sortedSteps;
 
     this.webXRScene = new webXRScene("main-scene-canvas");
     this.webXRScene.Events.addEventListener("OnChangeXRView",(mode)=>{
-      console.log(mode , " enabled");
-
-      //alert("XR Mode changed", mode.xrMode);
-
-      if(mode.xrMode == "VR"){
+      
+      if(mode.xrMode != "Desktop"){
+        this.webXRScene.Controls.SetPosition(-3,1.8,0);
         console.log(this.library.VorhangSchiene);
-        this.library.VorhangSchiene.scene.position.y = 1;
+        //this.library.VorhangSchiene.scene.position.y = 1;
       }
     });
     var ambientLight = new AmbientLight(0x0c0c0c);
@@ -111,9 +107,9 @@ class MainScene{
       transparent: true,
       side: THREE.DoubleSide
     });
-    const meshLine = new THREE.Mesh(line, this.meshLineMaterial);
-    meshLine.position.y = 1;
-   //this.webXRScene.Scene.add(meshLine);
+    this.meshLine = new THREE.Mesh(line, this.meshLineMaterial);
+    this.meshLine.position.y = 1;
+    this.webXRScene.Scene.add(this.meshLine);
     this.webXRScene.Events.addEventListener("OnAnimationLoop",()=>{
       this.meshLineMaterial.dashOffset -= .00001;
   });
@@ -140,6 +136,7 @@ class MainScene{
     this.webXRScene.Loader.loadStack({
       stack : vorhangSchiene
     }).then((library)=>{
+
       this.library = Object.assign(this.library,library);
 
       Object.keys(library).map((elements, index)=>{
@@ -162,16 +159,28 @@ class MainScene{
           }
         });
 
-        console.log(this.vorhangSchiene);
         this.webXRScene.Scene.add(this.vorhangSchiene);
-        console.log("everything is loaded");
       });
+    }).then(()=>{
+      
+      this.SetupPreset();
+      console.log("%c -> everything is loaded", "background:#4caf50;color:#fff;padding:.2rem;");
     });
 
 
     //binding
     this.PlayActionByName = this.PlayActionByName.bind(this);
     this.ChangeAnimationStep = this.ChangeAnimationStep.bind(this);
+
+  }
+
+  SetupPreset = () => {
+    console.log("%c apply presets at start", "background:#4caf50;color:#fff;padding:.2rem;");
+
+    this.customMaskMaterial.SetRadius(5);
+    this.customMaskMaterial.SetPosition({x:0,y:1,z:0});
+      
+
   }
 
   SetupMaterials(el){
@@ -189,21 +198,41 @@ class MainScene{
   }
 
   PlayActionByName(clipName){
-    console.log(name, this.library);
+    console.log(clipName, this.library, MaskPositions[clipName]);
+
+    //Step
     var offset = 1;//this.webXRScene.Controls.GetCurrentXRMode() != "Desktop" ? 1 : 1;
-    
     this.currentStep = this.steps.indexOf(clipName);
+
+    
     //define some variables
     var clip = this.library.VorhangSchiene.actions[clipName];
-    var maskTargetPos = MaskPositions[clipName].target;
-    var maskCameraPos = MaskPositions[clipName].camera;
+
+    var maskTargetPos = {
+      x : MaskPositions[clipName].target_x,
+      y : MaskPositions[clipName].target_y,
+      z : MaskPositions[clipName].target_z,
+    };
+    var maskCameraPos = {
+      x : MaskPositions[clipName].cam_x,
+      y : MaskPositions[clipName].cam_y,
+      z : MaskPositions[clipName].cam_z,
+    };
     var radius = MaskPositions[clipName].radius;
 
+    //Für den ersten und letzten Step mach das Seil sichtbar 
+    this.meshLine.visible = clipName == "";
+    
+    //update ui
+    this.textUI.SetHeadline(clipName+ " ");
+    this.textUI.SetText(MaskPositions[clipName].Description);
+    this.textUI.SetPosition(maskTargetPos.x,maskTargetPos.y,maskTargetPos.z);
 
+    if(this.webXRScene.Controls.GetCurrentXRMode() == "Desktop"){
     //sets position and target of controls
       this.webXRScene.Controls.SetPosition(maskCameraPos.x,maskCameraPos.y + offset,maskCameraPos.z);
       this.webXRScene.Controls.SetTarget(maskTargetPos.x,maskTargetPos.y + offset,maskTargetPos.z, 2);
-
+    }
       //update visual sphere
       this.sphere.position.set(maskTargetPos.x,maskTargetPos.y + offset ,maskTargetPos.z);
       this.sphere.scale.set(radius * 2,radius * 2,radius * 2);
@@ -212,15 +241,15 @@ class MainScene{
       this.customMaskMaterial.SetRadius(radius);
       this.customMaskMaterial.SetPosition(maskTargetPos);
       
-      //update ui
-      this.textUI.SetHeadline(clipName+ " ");
-      this.textUI.SetText(MaskPositions[clipName].message);
-      this.textUI.SetPosition(maskTargetPos.x,maskTargetPos.y,maskTargetPos.z);
-      
+
+    //wenn eine Animation hinterlegt ist
+    console.log(MaskPositions, this.library.VorhangSchiene.actions, this.library.VorhangSchiene.actions.hasOwnProperty(clipName), clipName);
+    if(this.library.VorhangSchiene.actions.hasOwnProperty(clipName)){ 
       //play animation
       this.library.VorhangSchiene.mixer.stopAllAction();
       this.library.VorhangSchiene.actions[clip.name].reset();
       this.library.VorhangSchiene.actions[clip.name].play();
+    }
 
     return Object.assign({
       clipName : clipName

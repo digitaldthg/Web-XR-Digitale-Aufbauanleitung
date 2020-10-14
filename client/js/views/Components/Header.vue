@@ -7,16 +7,6 @@
       <div class="control-button vr-button" ref="VRcontrols"><VR /></div>
       <div class="control-button ar-button" ref="ARcontrols"><AR /></div>
     </div>
-
-    <div class="shaderControls">
-      <input type="range" value="0.001" step=".0001" v-on:input="ChangeDist"/>
-      <input type="range" min="0" max=".8" value="0.001" step=".0001" v-on:input="ChangeRadius"/>
-      <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'x')"/>
-      <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'y')"/>
-      <input type="range" min="-5" max="5" value="0.001" step=".0001" v-on:input="e=>ChangePos(e,'z')"/>
-      <button v-on:click="e=>GetCameraPos()">Get Camera Position</button>
-
-    </div>
   </header>
 </template>
 <style lang="sass" scoped>
@@ -48,8 +38,6 @@ button.account-button {
   }
 }
 
-
-
 .controls{
   display: flex;
   position: relative;
@@ -68,8 +56,7 @@ button.account-button {
   position: relative;
   border-radius: .5rem;
   box-shadow: 0 0 .5rem 0 rgba(0,0,0,.2);
-  padding: .5rem 1rem;
-
+  padding-left:.5rem;
   svg{
     width:25px;
     height:25px;
@@ -86,6 +73,7 @@ button.account-button {
   white-space: nowrap;
   left: initial!important;
   width: initial!important;
+  padding: 1rem;
 }
 </style>
 <script>
@@ -112,30 +100,32 @@ export default {
     this.$refs.VRcontrols.appendChild(VRButton);
   },
   methods:{
-    GetCameraPos(){
-      var pos = store.state.mainScene.webXRScene.Camera.GetPosition();
-      console.log({...pos});
-      console.log(store.state.mainScene.webXRScene.Camera.instance);
-    },
-    ChangeDist(e){
+    // GetCameraPos(){
+    //   var pos = store.state.mainScene.webXRScene.Camera.GetPosition();
+    //   var target = store.state.mainScene.webXRScene.Controls.GetTarget();
+    //   console.log("cam",{...pos});
+    //   console.log("target", {...target});
+    //   console.log(store.state.mainScene.webXRScene.Camera.instance);
+    // },
+    // ChangeDist(e){
 
-      store.state.mainScene.customMaskMaterial.userData.shader.uniforms.dist.value = parseFloat(e.target.value);
-    },
-    ChangeRadius(e){
-      console.log("radius", e.target.value);
-      //window.radius  = e.target.value;
-      store.state.mainScene.customMaskMaterial.userData.shader.uniforms.radius.value = parseFloat(e.target.value);
-      store.state.mainScene.sphere.scale.x = parseFloat(e.target.value) * 2;
-      store.state.mainScene.sphere.scale.y = parseFloat(e.target.value) * 2;
-      store.state.mainScene.sphere.scale.z = parseFloat(e.target.value) * 2;
+    //   store.state.mainScene.customMaskMaterial.userData.shader.uniforms.dist.value = parseFloat(e.target.value);
+    // },
+    // ChangeRadius(e){
+    //   console.log("radius", e.target.value);
+    //   //window.radius  = e.target.value;
+    //   store.state.mainScene.customMaskMaterial.userData.shader.uniforms.radius.value = parseFloat(e.target.value);
+    //   store.state.mainScene.sphere.scale.x = parseFloat(e.target.value) * 2;
+    //   store.state.mainScene.sphere.scale.y = parseFloat(e.target.value) * 2;
+    //   store.state.mainScene.sphere.scale.z = parseFloat(e.target.value) * 2;
       
-    },
-    ChangePos(e, axis){
-      store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value[axis] = parseFloat(e.target.value);
-      store.state.mainScene.sphere.position[axis] = parseFloat(e.target.value);
+    // },
+    // ChangePos(e, axis){
+    //   store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value[axis] = parseFloat(e.target.value);
+    //   store.state.mainScene.sphere.position[axis] = parseFloat(e.target.value);
       
-      console.log(store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value);
-    }
+    //   console.log(store.state.mainScene.customMaskMaterial.userData.shader.uniforms.customPositionVector.value);
+    // }
   }
 }
 
