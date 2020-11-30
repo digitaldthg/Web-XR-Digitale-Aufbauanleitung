@@ -1,5 +1,6 @@
 //import * as THREE from 'three';
 import '../style/main.scss';
+
 import Vue from 'vue/dist/vue.js';
 import home from './views/home.vue';
 

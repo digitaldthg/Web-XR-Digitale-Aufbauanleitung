@@ -2,7 +2,8 @@
   <div class="home">
     <!-- <ProgressOverlay/> -->
     <Header />
-    <ShaderDev />
+    <Notification />
+    <!-- <ShaderDev /> -->
     <Footer/>
   </div> 
 </template>
@@ -35,6 +36,7 @@ import MainScene from '../ThreeD/mainScene';
 import Header from './Components/Header.vue';
 import ProgressOverlay from './Components/ProgressOverlay.vue';
 import Footer from './Components/Footer.vue';
+import Notification from './Components/Notification.vue';
 import store from '../store';
 import ShaderDev from './Components/ShaderDev.vue';
 
@@ -45,7 +47,8 @@ export default {
     Header,
     Footer,
     ProgressOverlay,
-    ShaderDev
+    ShaderDev,
+    Notification
   },
   created(){
     this.Init();

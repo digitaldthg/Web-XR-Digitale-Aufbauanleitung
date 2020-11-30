@@ -1,6 +1,9 @@
 <template>
    <div class="shaderControls">
      <div class="controller-item">
+      <button v-on:click="GetStore()">GetStore</button>
+     </div>
+     <div class="controller-item">
       <label for="dist">Change Dist</label>
       <input id="dist" type="range" value="0.001" step=".0001" v-on:input="ChangeDist"/>
      </div>
@@ -62,6 +65,9 @@ export default {
       console.log("cam",{...pos});
       console.log("target", {...target});
       console.log(store.state.mainScene.webXRScene.Camera.instance);
+    },
+    GetStore(){      
+      console.log(store);
     },
     GetShaderPos(){
       console.log(store.state.mainScene.customMaskMaterial.userData.shader.uniforms.radius.value);

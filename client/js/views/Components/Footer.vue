@@ -30,7 +30,6 @@
       </div> 
       <div class="footer-content">
         <button class="nav-buttons" v-on:click="ChangeAnimationStep(1)"><Next/></button>
-        {{currentStep}}
       </div>
     </div>
   </footer>
@@ -221,12 +220,14 @@ export default {
     ChangeAnimationStep(dir){
       
       var message = store.state.mainScene.ChangeAnimationStep(dir);
-      console.log(message);
+      console.log("message",message);
       this.currentStep = store.state.mainScene.currentStep;
       this.headline = message.clipName;
       this.text = message.Description;
 
       this.toolsNeeded = this.filterTools(message);
+
+      store.commit('SetCurrentStep', message);
     },
     filterTools(stepInfo){
       

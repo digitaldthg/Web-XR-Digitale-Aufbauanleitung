@@ -10,6 +10,7 @@ const store = new Vuex.Store({
   state: {
     currentLibraryItem: "VorhangSchiene",
     currentAnimationClip: 0,
+    currentStepMessage  : {},
     mainScene : new MainScene(),
     library : {},
     MaskPositions : MaskPositions
@@ -25,6 +26,12 @@ const store = new Vuex.Store({
 
       console.log(state, clip);
       clip.play();
+    },
+    SetCurrentStep(state,stepMessage){
+      console.log("stepMessage" , stepMessage);
+
+      state.currentStepMessage  = stepMessage;
+
     }
 
   }

@@ -17,7 +17,7 @@ class CustomMaskMaterial extends THREE.MeshStandardMaterial {
  	shader.uniforms.time = { value: 0 };
  	shader.uniforms.dist = { value: 1 };
  	shader.uniforms.radius = { value: 0 };
- 	shader.uniforms.maskOpacity = { value: .05 };
+ 	shader.uniforms.maskOpacity = { value: .5 };
  	shader.uniforms.customPositionVector = { value: new THREE.Vector3(0,0,0) };
 
   //  console.log(shader.vertexShader);
@@ -60,8 +60,6 @@ class CustomMaskMaterial extends THREE.MeshStandardMaterial {
   };
 
   SetRadius(rad){
-
-    console.log("radius -> " ,rad , this.userData);
     this.userData.shader.uniforms.radius.value = rad;
   }
   SetPosition(pos){

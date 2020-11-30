@@ -14,6 +14,18 @@ class TextUI{
 
     this.context.webXRScene.Events.addEventListener("OnChangeXRView",(mode)=>{
       this.container.visible = mode.xrMode != "Desktop";
+
+      if(mode.xrMode == "AR"){
+        if(mode.session.domOverlayState.type !== "screen"){
+
+          this.container.visible = false;
+
+        }else{
+          this.container.visible = true;
+        }
+      }
+
+      console.log(mode);
     });
 
     this.Init();
@@ -159,7 +171,7 @@ class TextUI{
 
   SetPosition(x,y,z){
     let offset = 1;//this.context.webXRScene.Controls.GetCurrentXRMode() != "Desktop" ? 1 : 1;
-    this.container.position.set(x,( y + .4 + offset),z);
+    this.container.position.set(x,( y + .4 + 1),z);
   }
   
   SetText(text){
@@ -176,7 +188,7 @@ class TextUI{
 
   Update(){
 
-    this.container.lookAt(this.context.webXRScene.Camera.GetPosition());
+    this.container.lookAt(this.context.webXRScene.Controls.GetCameraPosition());
 
   }
 

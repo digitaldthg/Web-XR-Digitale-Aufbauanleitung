@@ -6,6 +6,7 @@
     <div class="controls" ref="controls">
       <div class="control-button vr-button" ref="VRcontrols"><VR /></div>
       <div class="control-button ar-button" ref="ARcontrols"><AR /></div>
+      <FullscreenButton/>
     </div>
   </header>
 </template>
@@ -82,17 +83,23 @@ import store from '../../store';
 import VR from '../../Icons/VR.svg';
 import AR from '../../Icons/AR.svg';
 
+import FullscreenButton from './FullscreenButton.vue';
+
 export default {
   name : "Header",
   store : store,
   components:{
     Account,
     VR,
-    AR
+    AR,
+    FullscreenButton
   },
   created(){},
   mounted(){
     var ARButton = store.state.mainScene.webXRScene.Controls.GetARButton();
+
+    console.log(ARButton);
+    ARButton._domOverlayElement = document.getElementById("main-dom-element");
     var VRButton = store.state.mainScene.webXRScene.Controls.GetVRButton();
 
     VRButton.addEventListener("click",()=>{console.log("VR enabled");});
