@@ -1,7 +1,22 @@
 module.exports = {
+  
+  publicPath: '/TP4/',
+  chainWebpack: config => {
+    config.module.rules.delete("svg");
+  },
   configureWebpack: {
+    devServer:{
+      https: true,
+    },
     module: {
-      rules : [
+      rules: [
+        {
+          test: /\.svg$/,
+          use: [
+            'babel-loader',
+            'vue-svg-loader',
+          ],
+        },
         {
           test: /\.(gltf)$/,
           use: [
@@ -10,19 +25,7 @@ module.exports = {
             }
           ]
         },
-        {
-          test: /\.(bin)$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {}
-            }
-          ]
-        }
       ]
-    },
-    plugins: [
-      //new MyAwesomeWebpackPlugin()
-    ]
+    }
   }
 }
