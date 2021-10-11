@@ -13,6 +13,7 @@
 <style lang="scss" scoped>
 header {
   position: absolute;
+  z-index: 1;
   top: 0;
   left: 0;
   right: 0;
@@ -92,7 +93,10 @@ export default {
   },
   created() {},
   mounted() {
-    this.CreateXRButtons();
+    this.$nextTick(()=>{
+
+      this.CreateXRButtons();
+    });
   },
   methods: {
     CreateXRButtons() {

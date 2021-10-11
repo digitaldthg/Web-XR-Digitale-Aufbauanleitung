@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <Header />
+    <ProgressOverlay />
     <Notification />
     <Footer />
   </div>
@@ -11,33 +12,30 @@ import "es6-promise/auto";
 import Header from "./Components/Header.vue";
 import Footer from "./Components/Footer.vue";
 import Notification from "./Components/Notification.vue";
+import ProgressOverlay from './Components/ProgressOverlay.vue';
+import MainScene from '../ThreeD/MainScene';
+
 
 export default {
   name: "Home",
   components: {
     Header,
     Footer,
-    Notification
+    Notification,
+    ProgressOverlay
+  },
+  computed:{
+    ShowProgressBar(){
+      console.log(this.$store.state.loaded)
+      return !this.$store.state.loaded;
+    }
   },
   mounted() {
     this.Init();
-  },
-  data() {
-    return {
-      library: {},
-      mainScene: {},
-      message: "Hello Vue!",
-    };
-  },
+  },  
   methods: {
     Init() {
-      
-      this.$store.state.mainScene.webXRScene.Events.addEventListener(
-        "OnLoadStack",
-        (arg) => {
-          this.$store.commit("SetLibrary", arg);
-        }
-      );
+      this.$store.commit("SetMainScene", new MainScene(this.$store));
     },
   },
 };

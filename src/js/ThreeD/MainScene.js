@@ -212,8 +212,10 @@ class MainScene {
         
         //Fügt die Vorhangschiene zur Scene hinzu
         this.webXRScene.Scene.add(this.vorhangSchiene);
+
         console.log("%c GLTF Model zur Scene hinzugefügt", "background:#4caf50;color:#fff;padding:.2rem;");
       });
+      this.store.commit("SetLibrary", this.library);
     });
   }
 
