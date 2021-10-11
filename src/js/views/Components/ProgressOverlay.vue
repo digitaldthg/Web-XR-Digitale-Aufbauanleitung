@@ -25,7 +25,7 @@
 .progress-bar{
   width:80%;
   max-width:300px;
-  height:30px;
+  height:10px;
   border-radius : 5px;
   background:#ccc;
   padding:2px;
@@ -65,14 +65,11 @@ export default {
     this.$nextTick(()=>{
 
       this.$store.state.mainScene.webXRScene.Events.addEventListener("OnProgress",(loading)=>{
-        console.log("loading" , loading)
         this.percentage = loading.progress * 100;
       });
       
       this.$store.state.mainScene.webXRScene.Events.addEventListener("OnLoadStack",(loading)=>{
-        console.log("loaded" , loading);
         this.visible = false;
-        this.$store.commit("SetLoaded", true);
       });
     })
   }

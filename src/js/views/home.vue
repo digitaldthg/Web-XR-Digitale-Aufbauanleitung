@@ -24,12 +24,6 @@ export default {
     Notification,
     ProgressOverlay
   },
-  computed:{
-    ShowProgressBar(){
-      console.log(this.$store.state.loaded)
-      return !this.$store.state.loaded;
-    }
-  },
   mounted() {
     this.Init();
   },  
