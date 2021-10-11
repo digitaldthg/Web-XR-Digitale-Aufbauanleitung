@@ -1,6 +1,6 @@
 module.exports = {
   
-  publicPath: '/TP4/',
+  publicPath: '/',
   chainWebpack: config => {
     config.module.rules.delete("svg");
   },
