@@ -278,12 +278,12 @@ const staticContent = {
   ]
 }
 
-var MaskPositions = {};
+var StaticContent = {};
 
 staticContent.Vorhangschiene_Tutorialsteps.map((step, index)=>{
-  MaskPositions[step.js_name] = step;
+  StaticContent[step.js_name] = step;
 });
 
 
 
-export default MaskPositions;
+export default StaticContent;

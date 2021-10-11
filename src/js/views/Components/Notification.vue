@@ -6,7 +6,6 @@
     <div class="notification-single" v-if="$store.state.currentStepMessage.Notification_2 !== null">
       <p>{{$store.state.currentStepMessage.Notification_2}}</p>
     </div>
-    
     <div class="notification-single warning" v-if="$store.state.currentStepMessage.Warning !== null">
       <p>{{$store.state.currentStepMessage.Warning}}</p>
     </div>
@@ -28,7 +27,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 .notification {
   position: absolute;

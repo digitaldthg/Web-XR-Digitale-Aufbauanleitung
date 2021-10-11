@@ -4,6 +4,15 @@ module.exports = {
   chainWebpack: config => {
     config.module.rules.delete("svg");
   },
+  css: {
+    loaderOptions: {
+      scss: {
+        additionalData: `
+          @import "./src/style/variables.scss";
+        `
+      }
+    }
+  },
   configureWebpack: {
     devServer:{
       https: true,

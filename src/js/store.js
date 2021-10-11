@@ -1,38 +1,27 @@
 import Vue from 'vue';
-
 import Vuex from 'vuex';
 import MainScene from './ThreeD/MainScene';
-import MaskPositions from './ThreeD/MaskPositions';
-
+import StaticContent from '../Content/StaticContent';
 Vue.use(Vuex);
+
 
 export const store = new Vuex.Store({
   state: {
     currentLibraryItem: "VorhangSchiene",
     currentAnimationClip: 0,
-    currentStepMessage  : {},
-    mainScene : new MainScene(),
-    library : {},
-    MaskPositions : MaskPositions
+    currentStepMessage: {},
+    mainScene: new MainScene(),
+    library: {},
+    StaticContent: StaticContent
   },
   mutations: {
-    increment (state) {
-      state.count++
-    },
-    SetLibrary(state,library){
+    // Setzt alle geladenen Elemente als library 
+    SetLibrary(state, library) {
       state.library = library;
     },
-    PlayClip(state,clip){
-
-      console.log(state, clip);
-      clip.play();
-    },
-    SetCurrentStep(state,stepMessage){
-      console.log("stepMessage" , stepMessage);
-
-      state.currentStepMessage  = stepMessage;
-
+    // Setzt die Message des aktuellen Aufbauschritts als currentStepMessage
+    SetCurrentStep(state, stepMessage) {
+      state.currentStepMessage = stepMessage;
     }
-
   }
 });

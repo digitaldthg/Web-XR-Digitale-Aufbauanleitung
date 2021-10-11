@@ -5,53 +5,49 @@
   </div>
 </template>
 <script>
-
-import Fullscreen from '../../Icons/Fullscreen.svg';
+import Fullscreen from "../../Icons/Fullscreen.svg";
 export default {
-  name : "FullscreenButton",
-  components:{
-    Fullscreen
+  name: "FullscreenButton",
+  components: {
+    Fullscreen,
   },
-  data : function(){
+  data: function() {
     return {
-      isFullscreen : false
-    }
+      isFullscreen: false,
+    };
   },
-  methods : {
-    Toggle(){
-      if(this.$data.isFullscreen){
+  methods: {
+    Toggle() {
+      if (this.$data.isFullscreen) {
         this.ExitFullscreen();
-      }else{
+      } else {
         this.RequestFullscreen();
       }
     },
     RequestFullscreen() {
-      //console.log(this.$data , data, this);
-
-
       var element = document.documentElement;
-      if(element.requestFullscreen) {
+      if (element.requestFullscreen) {
         element.requestFullscreen();
-      } else if(element.mozRequestFullScreen) {
+      } else if (element.mozRequestFullScreen) {
         element.mozRequestFullScreen();
-      } else if(element.msRequestFullscreen) {
+      } else if (element.msRequestFullscreen) {
         element.msRequestFullscreen();
-      } else if(element.webkitRequestFullscreen) {
+      } else if (element.webkitRequestFullscreen) {
         element.webkitRequestFullscreen();
       }
 
       this.$data.isFullscreen = true;
     },
     ExitFullscreen() {
-      if(document.exitFullscreen) {
+      if (document.exitFullscreen) {
         document.exitFullscreen();
-      } else if(document.mozCancelFullScreen) {
+      } else if (document.mozCancelFullScreen) {
         document.mozCancelFullScreen();
-      } else if(document.webkitExitFullscreen) {
+      } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
       }
       this.$data.isFullscreen = false;
-    }
-  }
-}
+    },
+  },
+};
 </script>
