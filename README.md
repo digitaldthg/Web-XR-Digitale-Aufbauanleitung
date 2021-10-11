@@ -19,6 +19,8 @@ Die Aufbauanleitung kann in jedem WebXR-fähigen Browser erlebt werden. Dadurch 
 
 Weitere Infos zum Projekt finden Sie [hier](https://digital.dthg.de/webxr-tutorial-ein-prototyp-fuer-digitale-aufbauanleitungen/).
 
+Eine Demo finden Sie [hier](https://developer.digital.dthg.de/TP4/index.html)
+
 
 ![Prototypische Aufbauanleitung "Vorhangschiene TRUMPF 95"](readme_image/WebXR-Tutorial-–-ein-Prototyp-fuer-digitale-Aufbauanleitungen.jpeg)
 ---
